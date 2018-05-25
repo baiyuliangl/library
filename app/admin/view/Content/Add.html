@@ -1,0 +1,39 @@
+{extend name="admin@public/base" /}
+{block name="main-content"}
+	<div class="page-content">
+		书籍总数 &nbsp;&nbsp;
+		男生书籍 &nbsp;&nbsp;
+		女生书籍
+	</div>
+	<form class="form-horizontal ajaxForm2" name="form0" method="post" action="{:url('Content/Save')}"  enctype="multipart/form-data">
+		书名 <input type="text" name="Content_BookName" value="{$res[0]['Content_BookName']}"/>
+		作者 <input type="text" name="Content_Author" value="{$res[0]['Content_Author']}"/>
+		频道 <select name='Content_Channel'>
+				<option>请选择</option>
+				<option value='0' {if $res[0]['Content_Channel']===0}selected{/if}>男生</option>
+				<option value='1' {if $res[0]['Content_Channel']==1}selected{/if}>女生</option>
+			 </select>
+		书籍类别 <input type="text" name="Content_BookType" value="{$res[0]['Content_BookType']}"/>
+		标签 <input type="text" name="Content_Mark" value="{$res[0]['Content_Mark']}"/>
+		来源 <input type="text" name="Content_From" value="{$res[0]['Content_From']}"/>
+		简介 <input type="text" name="Content_Descrition" value="{$res[0]['Content_Descrition']}"/>
+		图片 <input type="file" name="Content_Picture" value="{$res[0]['Content_Picture']}"/>
+		<div class="clearfix form-actions">
+			<div class="col-md-offset-3 col-md-9">
+				<button class="btn btn-info" type="submit">
+					<i class="ace-icon fa fa-check bigger-110"></i>
+					保存
+				</button>
+			</div>
+		</div>
+	</form>
+{/block}
+{block name="scripts"}
+	<script type="text/javascript" src="__PUBLIC__/sldate/moment.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/sldate/daterangepicker.js"></script>
+    <script type="text/javascript">
+        $('#reservation').daterangepicker(null, function (start, end, label) {
+            console.log(start.toISOString(), end.toISOString(), label);
+        });
+    </script>
+{/block}
