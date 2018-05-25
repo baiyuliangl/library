@@ -12,10 +12,16 @@ class Content extends Base{
 		$mannum = count($man);
 		$woman = Db::name('contents')->where('Content_Channel',1)->select();
 		$womannum = count($woman);
+
+		$model = new Contents;
+		$models = $model->paginate(5);
+		$show = $models->render();
+		$show=preg_replace("(<a[^>]*page[=|/](\d+).+?>(.+?)<\/a>)","<a href='javascript:ajax_page($1);'>$2</a>",$show);
 		$this->assign('num',$num);
+		$this->assign('page',$show);
 		$this->assign('mannum',$mannum);
 		$this->assign('womannum',$womannum);
-		$this->assign('total',$total);
+		$this->assign('total',$models);
 		return $this->fetch();
 	}
 	public function Add(){
