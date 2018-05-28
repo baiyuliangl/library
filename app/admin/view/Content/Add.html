@@ -6,6 +6,7 @@
 		女生书籍
 	</div>
 	<form class="form-horizontal ajaxForm2" name="form0" method="post" action="{:url('Content/Save')}"  enctype="multipart/form-data">
+		<input type="hidden" name="Contents_id" value="{$res[0]['Contents_id']}"/>
 		书名 <input type="text" name="Content_BookName" value="{$res[0]['Content_BookName']}"/>
 		作者 <input type="text" name="Content_Author" value="{$res[0]['Content_Author']}"/>
 		频道 <select name='Content_Channel'>

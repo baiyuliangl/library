@@ -15,10 +15,8 @@ class Content extends Base{
 
 		$model = new Contents;
 		$models = $model->paginate(5);
-		$show = $models->render();
-		$show=preg_replace("(<a[^>]*page[=|/](\d+).+?>(.+?)<\/a>)","<a href='javascript:ajax_page($1);'>$2</a>",$show);
 		$this->assign('num',$num);
-		$this->assign('page',$show);
+		$this->assign('page',$models);
 		$this->assign('mannum',$mannum);
 		$this->assign('womannum',$womannum);
 		$this->assign('total',$models);
@@ -43,6 +41,8 @@ class Content extends Base{
 	public function Details(){
 		$bookid = input('id');
 		$res = Db::name('contents')->where('Contents_id',$bookid)->select();
+		// echo "<pre>";
+		// print_r($res);exit;
 		return $this->fetch('Content/Add',
 				['res'=>$res]
 			);
@@ -53,7 +53,8 @@ class Content extends Base{
 		// $test = input('post.');
 		// $model = model('contents');
 		$file = request()->file('Content_Picture');
-
+		// echo "<pre>";
+		// print_r($test);exit;
 		// 移动到框架应用根目录/public/uploads/ 目录下
 	    if($file){
 	        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
@@ -71,7 +72,22 @@ class Content extends Base{
 	            echo $file->getError();
 	        }
 	    }
-		$model->data([
+	    if(input('Contents_id')!=''){
+	    	//更新
+			$model->save([
+				'Contents_id' => input('Contents_id'),
+				'Content_BookName' => input('Content_BookName'),
+				'Content_Author' => input('Content_Author'),
+				'Content_Channel' => input('Content_Channel'),
+				'Content_BookType' => input('Content_BookType'),
+				'Content_Mark' => input('Content_Mark'),
+				'Content_From' => input('Content_From'),
+				'Content_Descrition' => input('Content_Descrition'),
+				'Content_Picture'=> $path
+			],['Contents_id' => input('Contents_id')]);
+	    }else{
+	    	//新增
+	    	$model->data([
 				'Content_BookName' => input('Content_BookName'),
 				'Content_Author' => input('Content_Author'),
 				'Content_Channel' => input('Content_Channel'),
@@ -81,7 +97,8 @@ class Content extends Base{
 				'Content_Descrition' => input('Content_Descrition'),
 				'Content_Picture'=> $path
 			]);
-		$model->save();
+			$model->save();
+	    }
 		if($model->save()){
 			$this->error('保存失败',url('admin/Content/Add'));
 		}else{
